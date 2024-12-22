@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b261409d93003e4680049ea3d1a3609, type: 3}
+  m_Name: EffectHolder
+  m_EditorClassIdentifier: 
+  slide:
+  - {fileID: 8644853852446500011, guid: ae3b55acb690949478b43848e7cb1b4a, type: 3}
+  - {fileID: 8644853852446500011, guid: 0b57d5fa4ddf4e74599fa405f1289681, type: 3}
+  - {fileID: 8644853852446500011, guid: 594d23058ea87ae47a19ac5dbe7892b0, type: 3}
+  - {fileID: 8644853852446500011, guid: dec9614f4fcfbb2498f4ce9f24f3f60b, type: 3}
+  multiSlide:
+  - {fileID: 7467128690128577727, guid: 4bcc735ecb11da642b26a2924c7dedea, type: 3}
+  cooking:
+  - {fileID: 1039324650175788552, guid: 94ac2c16b4646104e9f4b73dc4a21cc0, type: 3}
+  - {fileID: 4593184484909914552, guid: 8623cfb3d2feae4458cb0fb1f040c17b, type: 3}

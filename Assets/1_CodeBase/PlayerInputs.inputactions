@@ -1,0 +1,54 @@
+{
+    "name": "PlayerInputs",
+    "maps": [
+        {
+            "name": "Touch",
+            "id": "39fdb946-79be-48e2-bd7b-c8d5d886ab05",
+            "actions": [
+                {
+                    "name": "StartTouch",
+                    "type": "PassThrough",
+                    "id": "d0240fa4-3811-48e9-b44a-ec5cc9efe021",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "StartPosition",
+                    "type": "PassThrough",
+                    "id": "f5b345dc-df4f-4741-acc0-36d59116c705",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "b4698e30-0fa0-46a5-b816-5d2544e61c8d",
+                    "path": "<Touchscreen>/primaryTouch/press",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "StartTouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0db06f87-4f85-4ca9-b7ce-14eeb2a61648",
+                    "path": "<Touchscreen>/primaryTouch/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "StartPosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
