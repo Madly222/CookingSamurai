@@ -27,7 +27,7 @@ public class CookController : MonoBehaviour
     private int _randomVariation;
     private int _currentItem = -1;
     private readonly List<string> _claimed = new();
-
+    
     private bool _canClaim;
     //[SerializeField] private AudioSource soundSource;
     //[SerializeField] private AudioClip soundEffect; 
@@ -56,13 +56,12 @@ public class CookController : MonoBehaviour
     }
     public void SpawnPreparedPiece(GameObject preparedFood, string claimedName)
     {
-        if(_canClaim)
+        if(!_canClaim)
             return;
         
-        MoveItem(preparedFood,boardPoint[_nrPrepared + 1]);
+        MoveItem(preparedFood, boardPoint[_nrPrepared + 1]);
         
         CheckPreparing(claimedName);
-        return;
     }
 
     public void CheckPreparing(string foodName)
@@ -133,15 +132,6 @@ public class CookController : MonoBehaviour
         item.transform.SetParent(point.transform);
     }
 
-    
-    public void SellFood()
-    {
-        //тут нужно будет доделать
-        ChangeFood();
-        _canClaim = true;
-        itemDropper.enabled = true;
-    }
-
     public void CanClaimChange(bool state)
     {
         _canClaim = state;
@@ -150,8 +140,7 @@ public class CookController : MonoBehaviour
     private IEnumerator TrashCooldown(int time)
     {
         yield return new WaitForSeconds(time);
-        _canClaim = true;
-        itemDropper.enabled = true;
+        //_canClaim = true;
     }
     
     private static int Randomizer(int min, int max)

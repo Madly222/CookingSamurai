@@ -5,27 +5,37 @@ using UnityEngine;
 public class AnimationEvents : MonoBehaviour
 {
     [SerializeField] private CookController cookController;
+    [SerializeField] private Updating updating;
+    //[SerializeField] private SellButton sellButton;
 
     [SerializeField] private GameObject buttonLeft;
     [SerializeField] private GameObject buttonRight;
 
     private bool _temp;
     
-    public void StopCook(int canClaim)
+    public void DisableCook()
     {
-        _temp = canClaim == 0;
-        cookController.CanClaimChange(_temp);
-    }
-
-    public void ButtonSwitcher(int grades)
-    {
-        _temp = grades == 180;
-        buttonLeft.SetActive(_temp);
-        buttonRight.SetActive(!_temp);
+        cookController.CanClaimChange(false);
+        updating.canSlice = false;
     }
     
-    public void SellItem()
+    public void EnableCook()
     {
-        cookController.SellFood();
+        cookController.CanClaimChange(true);
+        updating.canSlice = true;
+    }
+
+    public void DisableButtons()
+    {
+        buttonLeft.SetActive(false);
+        buttonRight.SetActive(false);
+        DisableCook();
+    }
+    public void ButtonSwitcher(string direction)
+    {
+        buttonLeft.SetActive(direction == "right");
+        buttonRight.SetActive(direction == "left");
+        cookController.CanClaimChange(direction == "right");
+        updating.canSlice = direction == "right";
     }
 }

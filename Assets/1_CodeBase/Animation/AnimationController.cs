@@ -42,7 +42,7 @@ public class AnimationController : MonoBehaviour
         
     }
     
-    public void RotateCamera(string state)
+    public void RotateCamera(string animationName)
     {
         if (CheckAnimatorState())
         {
@@ -50,19 +50,7 @@ public class AnimationController : MonoBehaviour
             return;
         }
         ChangeAnimatorState(true);
-        
-        switch (state)
-        {
-            case "right":
-                sceneAnimator.Play("RotateRight");
-                return;
-            case "left":
-                sceneAnimator.Play("RotateLeft");
-                return;
-            default:
-                Logger.LogError("Rotation camera error", gameObject);
-                return;
-        }
+        sceneAnimator.Play(animationName);
     }
     
     private void ChangeAnimatorState(bool state)
