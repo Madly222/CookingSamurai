@@ -27,13 +27,13 @@ public class AnimationController : MonoBehaviour
     public void PrepareFood(bool isTrash)
     {
         ChangeAnimatorState(true);
-        sceneAnimator.SetInteger(PrepareID, Randomizer(1,2));
+        sceneAnimator.Play(Randomizer(1, 2) == 1 ? "prepare1" : "prepare2");
+        
         sceneAnimator.SetBool(IsTrash, isTrash);
     }
     
     public void DisableAnimator()
     {
-        sceneAnimator.SetInteger(PrepareID, 0);
         sceneAnimator.enabled = false;
     }
 

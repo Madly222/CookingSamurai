@@ -29,13 +29,11 @@ public class AnimationEvents : MonoBehaviour
     {
         buttonLeft.SetActive(false);
         buttonRight.SetActive(false);
-        DisableCook();
     }
     public void ButtonSwitcher(string direction)
     {
         buttonLeft.SetActive(direction == "right");
         buttonRight.SetActive(direction == "left");
-        cookController.CanClaimChange(direction == "right");
         updating.canSlice = direction == "right";
     }
 }

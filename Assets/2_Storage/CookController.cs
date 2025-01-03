@@ -28,7 +28,7 @@ public class CookController : MonoBehaviour
     private int _currentItem = -1;
     private readonly List<string> _claimed = new();
     
-    private bool _canClaim;
+    private bool _canClaim = true;
     //[SerializeField] private AudioSource soundSource;
     //[SerializeField] private AudioClip soundEffect; 
     
@@ -54,14 +54,15 @@ public class CookController : MonoBehaviour
         for (var k = 0; k < cookPool.recipes[_randomRecipe].variations[_randomVariation].recipe.Length; k++)
             npcUiController.ChangeTextureItem(k, cookPool.recipes[_randomRecipe].variations[_randomVariation].recipe[k].image);
     }
-    public void SpawnPreparedPiece(GameObject preparedFood, string claimedName)
+    public bool SpawnPreparedPiece(GameObject preparedFood, string claimedName)
     {
         if(!_canClaim)
-            return;
+            return _canClaim;
         
         MoveItem(preparedFood, boardPoint[_nrPrepared + 1]);
         
         CheckPreparing(claimedName);
+        return _canClaim;
     }
 
     public void CheckPreparing(string foodName)
@@ -99,37 +100,27 @@ public class CookController : MonoBehaviour
         _nrPrepared = 0;
         npcUiController.RestartColors();
         _claimed.Clear();
-        
-            /*foreach (var point in boardPoint)
-        {
-            point.SetActive(false);
-        }*/
-        
+            
         animationController.PrepareFood(true);
-        Debug.Log("make bad version");
-        _canClaim = false;
+        MoveItem(cookPool.trashPrepared[Randomizer(0, cookPool.trashPrepared.Count)], boardPoint[0]);
         
-        StartCoroutine(TrashCooldown(2));
     }
     private void MakeGoodFood()
     {
         _nrPrepared = 0;
         _claimed.Clear();
-        _canClaim = false;
         
         animationController.PrepareFood(false);
-        
-        //StartCoroutine(WaitSell());
+        MoveItem(cookPool.recipes[_randomRecipe].variations[_randomVariation].fullPrepared, boardPoint[0]);
     }
 
     private void MoveItem(GameObject item, GameObject point)
     {
-        point.SetActive(true);
+        item.transform.SetParent(point.transform, false);
+        item.transform.localPosition = Vector3.zero;
+        item.transform.localRotation = Quaternion.identity;
         item.SetActive(true);
-        item.transform.position = point.transform.position;
-        item.transform.rotation = point.transform.rotation;
-        
-        item.transform.SetParent(point.transform);
+        Logger.Log("Activated", item);
     }
 
     public void CanClaimChange(bool state)

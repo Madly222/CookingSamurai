@@ -6,20 +6,24 @@ using UnityEngine;
 public class FoodData : MonoBehaviour
 {
     [SerializeField] private CookController cookController;
-    [SerializeField] private ItemReloader reloadParent;
+    [SerializeField] private ChildrenReloader childrenReloader;
 
     [SerializeField] public string itemName;
     [SerializeField] public GameObject cookedVersion;
     
     [SerializeField] private SoundPlayer soundPlayer;
-    [SerializeField] private AudioClip soundEffect; 
+    [SerializeField] private AudioClip soundEffect;
+
+    private bool _canClaim;
     
     public void ClaimItem()
     {
-        SoundPlayer.Instance.PlayEffect(soundEffect, transform);
-        cookController.SpawnPreparedPiece(cookedVersion, itemName);
+        _canClaim = cookController.SpawnPreparedPiece(cookedVersion, itemName);
+        if(!_canClaim)
+            return;
         
-        reloadParent.ResetItem();
-        gameObject.SetActive(false);
+        SoundPlayer.Instance.PlayEffect(soundEffect, transform);
+
+        childrenReloader.ResetItem();
     }
 }
