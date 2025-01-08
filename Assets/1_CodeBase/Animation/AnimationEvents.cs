@@ -8,6 +8,7 @@ public class AnimationEvents : MonoBehaviour
     [SerializeField] private Updating updating;
     //[SerializeField] private SellButton sellButton;
 
+    [SerializeField] private GameObject sellButton;
     [SerializeField] private GameObject buttonLeft;
     [SerializeField] private GameObject buttonRight;
 
@@ -29,11 +30,22 @@ public class AnimationEvents : MonoBehaviour
     {
         buttonLeft.SetActive(false);
         buttonRight.SetActive(false);
+        updating.canSlice = false;
     }
     public void ButtonSwitcher(string direction)
     {
         buttonLeft.SetActive(direction == "right");
         buttonRight.SetActive(direction == "left");
         updating.canSlice = direction == "right";
+    }
+
+    public void EnableSellButton()
+    {
+        sellButton.SetActive(true);
+    }
+    
+    public void DisableSellButton()
+    {
+        sellButton.SetActive(false);
     }
 }

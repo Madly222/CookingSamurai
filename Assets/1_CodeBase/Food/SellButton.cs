@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class SellButton : MonoBehaviour
 {
-    [SerializeField] private CoinUI coinUI;
+
     [SerializeField] private LevelManager levelManager;
+    [SerializeField] private CookController cookController;
+    [SerializeField] private AnimationController animationController;
+        
+    [SerializeField] private CoinUI coinUI;
     
     [SerializeField] private AudioClip sellSound;
     
@@ -13,7 +17,13 @@ public class SellButton : MonoBehaviour
     
     public void OnMouseDown()
     {
-        coinUI.CoinIncrease(_points, levelManager.IncreaseGold(_points));
+        //Check can play animation for sale and if yes - sell it
+        if(animationController.PlaySellAnimation())
+            return;
+        
+        coinUI.CoinIncrease(levelManager.IncreaseGold(_points),_points);
+        cookController.ChangeFood();
+        
         SoundPlayer.Instance.PlayEffect(sellSound, transform);
         gameObject.SetActive(false);
     }

@@ -19,11 +19,10 @@ public class FoodData : MonoBehaviour
     public void ClaimItem()
     {
         _canClaim = cookController.SpawnPreparedPiece(cookedVersion, itemName);
+        childrenReloader.ResetItem();
         if(!_canClaim)
             return;
         
         SoundPlayer.Instance.PlayEffect(soundEffect, transform);
-
-        childrenReloader.ResetItem();
     }
 }

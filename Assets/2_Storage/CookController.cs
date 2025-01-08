@@ -40,7 +40,7 @@ public class CookController : MonoBehaviour
         itemDropper.trash = cookPool.nonPreparable;
     }
 
-    private void ChangeFood()
+    public void ChangeFood()
     {
         npcUiController.DisableBoxes();
         _randomRecipe = Randomizer(0, recipeLevel);
@@ -49,7 +49,6 @@ public class CookController : MonoBehaviour
         itemDropper.goodFood = cookPool.recipes[_randomRecipe].ingredients.Select(i => i.toSlice).ToList();
 
         npcUiController.ChangeDialogBox(cookPool.recipes[_randomRecipe].npcUI);
-        sellButton.SetPrice(cookPool.recipes[_randomRecipe].variations[_randomVariation].coinReward);
         
         for (var k = 0; k < cookPool.recipes[_randomRecipe].variations[_randomVariation].recipe.Length; k++)
             npcUiController.ChangeTextureItem(k, cookPool.recipes[_randomRecipe].variations[_randomVariation].recipe[k].image);
@@ -97,19 +96,26 @@ public class CookController : MonoBehaviour
     }
     private void MakeBadFood()
     {
+        _canClaim = false;
         _nrPrepared = 0;
         npcUiController.RestartColors();
         _claimed.Clear();
-            
+        
+        boardPoint[0].SetActive(false);
         animationController.PrepareFood(true);
         MoveItem(cookPool.trashPrepared[Randomizer(0, cookPool.trashPrepared.Count)], boardPoint[0]);
         
     }
     private void MakeGoodFood()
     {
+        sellButton.SetPrice(cookPool.recipes[_randomRecipe].variations[_randomVariation].coinReward);
+        
+        
+        _canClaim = false;
         _nrPrepared = 0;
         _claimed.Clear();
         
+        boardPoint[0].SetActive(false);
         animationController.PrepareFood(false);
         MoveItem(cookPool.recipes[_randomRecipe].variations[_randomVariation].fullPrepared, boardPoint[0]);
     }

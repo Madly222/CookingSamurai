@@ -31,7 +31,7 @@ public class CookEffect : MonoBehaviour
             
         _effect = Instantiate(effectHolder.GetCookingEffect(_id), transform, true);
         _effect.transform.localPosition = Vector3.zero;
-        _effect.transform.localRotation  = Quaternion.Euler(-90, 0, 0);
+        _effect.transform.localRotation  = Quaternion.Euler(0, 0, 0);
     }
     
     private void DeleteEffects()
