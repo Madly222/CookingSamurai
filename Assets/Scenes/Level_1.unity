@@ -6103,7 +6103,7 @@ MonoBehaviour:
   selectedType: 0
   slice: {fileID: 202740904}
   meshRenderer: {fileID: 2038743846}
-  collider: {fileID: 2038743845}
+  thisColl: {fileID: 2038743845}
   rigidBody: {fileID: 2038743844}
   dropPower: 5
   interactCooldown: 0.2
@@ -6941,7 +6941,7 @@ MonoBehaviour:
   selectedType: 0
   slice: {fileID: 6958284817484558917}
   meshRenderer: {fileID: 4424031075371336874}
-  collider: {fileID: 8802141389021805650}
+  thisColl: {fileID: 8802141389021805650}
   rigidBody: {fileID: 555741161839248537}
   dropPower: 5
   interactCooldown: 0.2
@@ -7627,7 +7627,7 @@ MonoBehaviour:
   selectedType: 0
   slice: {fileID: 0}
   meshRenderer: {fileID: 7595143885010482310}
-  collider: {fileID: 5776791292384921540}
+  thisColl: {fileID: 5776791292384921540}
   rigidBody: {fileID: 3427290427726690982}
   dropPower: 5
   interactCooldown: 0.2
@@ -8537,7 +8537,7 @@ MonoBehaviour:
   selectedType: 0
   slice: {fileID: 6634442263586885671}
   meshRenderer: {fileID: 1834417620224382997}
-  collider: {fileID: 1978535970742354105}
+  thisColl: {fileID: 1978535970742354105}
   rigidBody: {fileID: 4227676977450602793}
   dropPower: 5
   interactCooldown: 0.2
@@ -10956,7 +10956,7 @@ MonoBehaviour:
   selectedType: 0
   slice: {fileID: 6912900817845957208}
   meshRenderer: {fileID: 7579992170740493278}
-  collider: {fileID: 3219728956427539411}
+  thisColl: {fileID: 3219728956427539411}
   rigidBody: {fileID: 5235085276966514414}
   dropPower: 5
   interactCooldown: 0.2
@@ -14106,7 +14106,7 @@ MonoBehaviour:
   selectedType: 0
   slice: {fileID: 8440682135589378856}
   meshRenderer: {fileID: 5616114168432182246}
-  collider: {fileID: 8904421209161191601}
+  thisColl: {fileID: 8904421209161191601}
   rigidBody: {fileID: 4041950257310877523}
   dropPower: 5
   interactCooldown: 0.2
@@ -15199,7 +15199,7 @@ MonoBehaviour:
   selectedType: 0
   slice: {fileID: 8172949152123570734}
   meshRenderer: {fileID: 90464225899805922}
-  collider: {fileID: 7528122874538873865}
+  thisColl: {fileID: 7528122874538873865}
   rigidBody: {fileID: 2366127382494886354}
   dropPower: 5
   interactCooldown: 0.2
@@ -16562,7 +16562,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!33 &7138294105785945414
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -17459,7 +17459,7 @@ MonoBehaviour:
   selectedType: 0
   slice: {fileID: 8940464793814311484}
   meshRenderer: {fileID: 8229186207034229931}
-  collider: {fileID: 8229186207034229933}
+  thisColl: {fileID: 8229186207034229933}
   rigidBody: {fileID: 1137024149555486038}
   dropPower: 5
   interactCooldown: 0.2
@@ -18146,7 +18146,7 @@ MonoBehaviour:
   selectedType: 1
   slice: {fileID: 0}
   meshRenderer: {fileID: 0}
-  collider: {fileID: 0}
+  thisColl: {fileID: 0}
   rigidBody: {fileID: 0}
   dropPower: 5
   interactCooldown: 0.2
@@ -19458,7 +19458,7 @@ MonoBehaviour:
   - {fileID: 8440682135589378854}
   objectsToReset:
   - {fileID: 8953540901363419342}
-  - {fileID: 8953540901363419342}
+  - {fileID: 6507830772889066817}
   parentReloader: {fileID: 8904421209161191602}
 --- !u!114 &8440682135589378856
 MonoBehaviour:
@@ -20279,7 +20279,7 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!114 &8940464793814311482
@@ -20352,7 +20352,7 @@ MonoBehaviour:
   selectedType: 0
   slice: {fileID: 7728372516593299118}
   meshRenderer: {fileID: 8661290829284601034}
-  collider: {fileID: 2482996147137474994}
+  thisColl: {fileID: 2482996147137474994}
   rigidBody: {fileID: 9002050975465606472}
   dropPower: 5
   interactCooldown: 0.2

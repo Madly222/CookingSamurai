@@ -26,7 +26,7 @@ public class CookEffect : MonoBehaviour
         if (_id >= effectHolder.cooking.Length || _id < 0)
         {
             _id = 0;
-            Logger.LogError("Effect index out of holder", gameObject);
+            //Logger.LogError("Effect index out of holder", gameObject);
         }
             
         _effect = Instantiate(effectHolder.GetCookingEffect(_id), transform, true);

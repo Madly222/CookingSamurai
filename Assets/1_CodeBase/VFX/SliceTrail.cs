@@ -26,7 +26,7 @@ public class SliceTrail : MonoBehaviour
         if (_id >= effectHolder.slide.Length)
         {
             _id = 0;
-            Logger.LogError("Effect index out of holder", gameObject);
+            //Logger.LogError("Effect index out of holder", gameObject);
         }
             
         _effect = Instantiate(effectHolder.GetSlideEffect(_id), transform, true);

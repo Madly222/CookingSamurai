@@ -12,9 +12,12 @@ public class CoinUI : MonoBehaviour
     private int _newCoinValue;
     private float _elapsedTime;
     private int _displayValue;
+
+    private int _tempSaveValue;
     public void CoinIncrease(int itemPrice,int finalScore)
     {
-        StartCoroutine(IncreaseValueOverTime(itemPrice, finalScore));
+        _tempSaveValue += finalScore;
+        StartCoroutine(IncreaseValueOverTime(itemPrice, _tempSaveValue));
     }
 
     private IEnumerator IncreaseValueOverTime(int startValue, int endValue)

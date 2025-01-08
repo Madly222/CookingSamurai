@@ -17,7 +17,7 @@ public class FoodController : MonoBehaviour
     [SerializeField] private Slice slice;
     
     [SerializeField] private MeshRenderer meshRenderer;
-    [SerializeField] private new Collider collider;
+    [SerializeField] private Collider thisColl;
     [SerializeField] private Rigidbody rigidBody;
 
     [SerializeField] private float dropPower = 5f;
@@ -38,7 +38,7 @@ public class FoodController : MonoBehaviour
     private void OnEnable()
     {
         meshRenderer.enabled = true;
-        collider.enabled = true;
+        thisColl.enabled = true;
         rigidBody.angularVelocity = Random.onUnitSphere * Random.Range(50f, 90f) * Mathf.Deg2Rad;
         StartCoroutine(ApplyImpulseWithDelay());
     }
@@ -57,18 +57,18 @@ public class FoodController : MonoBehaviour
                         slice.ItemSlicing();
                         return false;
                     case InteractType.SliceMulti:
-                        Logger.Log("Multi sliced", gameObject);
+                        //Logger.Log("Multi sliced", gameObject);
                         if (!slice.ItemMultiSlicing()) return true;
                         RenderDeactivator();
                         return false;
                     default:
-                        Logger.LogError("Interact type error", gameObject);
+                        //Logger.LogError("Interact type error", gameObject);
                         return false;
                 }
             case "other":
                 return false;
             default:
-                Logger.LogError("Instrument error", gameObject);
+                //Logger.LogError("Instrument error", gameObject);
                 return false; 
         }
     }
@@ -76,7 +76,7 @@ public class FoodController : MonoBehaviour
     private void RenderDeactivator()
     {
         meshRenderer.enabled = false;
-        collider.enabled = false;
+        thisColl.enabled = false;
     }
 
     private IEnumerator Cooldown()

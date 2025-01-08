@@ -42,7 +42,7 @@ public class Slice : MonoBehaviour
     public bool ItemMultiSlicing()
     {
         PlaySound();
-        Logger.Log("need:" + sliceNeed + "  count:" + _sliceCount, gameObject);
+        //Logger.Log("need:" + sliceNeed + "  count:" + _sliceCount, gameObject);
         return _sliceCount >= sliceNeed;
     }
 

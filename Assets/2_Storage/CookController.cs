@@ -76,9 +76,9 @@ public class CookController : MonoBehaviour
         if (_currentItem == -1 || _claimed.Contains(foodName))
         {
             MakeBadFood();
-            Logger.Log(_currentItem == -1 
-                ? "Collected item is bad" 
-                : "This item already taken", gameObject);
+            //Logger.Log(_currentItem == -1 
+                //? "Collected item is bad" 
+                //: "This item already taken", gameObject);
             return;
         }
 
@@ -92,7 +92,7 @@ public class CookController : MonoBehaviour
 
     private void IncorrectBoard()
     {
-        Logger.Log("IncorrectBoard", gameObject);
+        //Logger.Log("IncorrectBoard", gameObject);
     }
     private void MakeBadFood()
     {
@@ -126,7 +126,7 @@ public class CookController : MonoBehaviour
         item.transform.localPosition = Vector3.zero;
         item.transform.localRotation = Quaternion.identity;
         item.SetActive(true);
-        Logger.Log("Activated", item);
+        //Logger.Log("Activated", item);
     }
 
     public void CanClaimChange(bool state)
