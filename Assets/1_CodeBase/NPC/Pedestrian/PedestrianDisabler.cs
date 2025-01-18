@@ -6,6 +6,7 @@ using UnityEngine;
 public class PedestrianDisabler : MonoBehaviour
 {
     [SerializeField] private float lifeTime = 20f;
+    
     private void OnEnable()
     {
         StartCoroutine(LifeTimeCd());
