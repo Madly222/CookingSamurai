@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class CustomerBrain : MonoBehaviour
 {
-    [SerializeField] private PedestrianDisabler pedestrianDisabler; // Менеджер для остановки корутин
     [SerializeField] private Animator npcAnimator; // Ссылка на Animator
 
     [SerializeField] public Transform stopPoint; // Точка назначения
@@ -31,7 +30,6 @@ public class CustomerBrain : MonoBehaviour
             if (distance <= stopDistance)
             {
                 npcAnimator.SetBool(Wait, true); // Включаем анимацию ожидания
-                pedestrianDisabler.StopAllCoroutines(); // Останавливаем все активные корутины
                 yield return StartCoroutine(SmoothRotateToStopPoint()); // Выполняем плавный поворот
                 yield break; // Завершаем корутину
             }
