@@ -3,45 +3,22 @@ using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class NpcController : MonoBehaviour
+public class RandomNpcEnabler : MonoBehaviour
 {
     [SerializeField] private Transform[] startPoint;
-    [SerializeField] private Transform[] counterPoint;
     [SerializeField] private GameObject[] pedestrian;
 
     [SerializeField] private int minSpawnRate = 5;
     [SerializeField] private int maxSpawnRate = 20;
-    [SerializeField] private int customerSpawnTime = 5;
-    [SerializeField] private int disableTime = 20; 
 
     private int _randomPedestrianIndex;
     private int _randomPoint;
-
-   private int[] _customerId;
-   private int _customerNumber;
-   private Coroutine _disableCoroutine;
 
    private int _i;
     
     private void Start()
     {
         StartCoroutine(EnablePedestrianCd());
-    }
-
-    private IEnumerator EnableCustomer()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(customerSpawnTime);
-            if (!SelectNpc()) continue; //if no inactive npc, dont take it
-            _customerNumber++;
-            _customerId[_customerNumber] = _randomPedestrianIndex;
-            
-            SelectStartPoint();
-            pedestrian[_randomPedestrianIndex].transform.position = startPoint[_randomPoint].position;
-            pedestrian[_randomPedestrianIndex].transform.rotation = startPoint[_randomPoint].rotation;
-            pedestrian[_randomPedestrianIndex].SetActive(true);
-        }
     }
 
     private IEnumerator EnablePedestrianCd()
@@ -55,11 +32,6 @@ public class NpcController : MonoBehaviour
             pedestrian[_randomPedestrianIndex].transform.rotation = startPoint[_randomPoint].rotation;
             pedestrian[_randomPedestrianIndex].SetActive(true);
         }
-    }
-
-    private void ActivateNpc()
-    {
-        
     }
 
     private bool SelectNpc()

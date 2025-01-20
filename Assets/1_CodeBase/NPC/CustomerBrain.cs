@@ -1,74 +1,107 @@
+using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CustomerBrain : MonoBehaviour
 {
-    [SerializeField] private Animator npcAnimator; // Ссылка на Animator
-
-    [SerializeField] public Transform stopPoint; // Точка назначения
+    [SerializeField] private Animator npcAnimator;
+    [SerializeField] private NpcNavigationController npcNavigationController;
+    [SerializeField] private float timeToDisable;
     
-    public float rotationSpeed = 2f; // Скорость поворота
-    public float stopDistance = 0.1f; // Минимальная дистанция до точки
+    public enum NpcState
+    {
+        Walk,
+        Wait,
+        Sit
+    }
 
+    //public NpcState currentNpcState;
+    
+    
+    private Transform _stopPoint;
+    public bool onPosition;
+    
+    [SerializeField] private float _rotationSpeed = 2f;
+    [SerializeField] private float _stopDistance = 0.3f;
+    [SerializeField] private float _distance;
+
+
+    
+    private bool _isCounterPoint;
     private static readonly int Wait = Animator.StringToHash("Wait");
 
     private void OnEnable()
     {
-        if (stopPoint == null)
-            return;
-        
-        StartCoroutine(MoveToPoint()); // Запускаем новую корутину
+        if(!npcNavigationController.RequestTask())
+            ToDoNpc(default);
+    }
+
+    public void ToDoNpc(NpcState currentNpcState)
+    {
+        switch (currentNpcState)
+        {
+            case NpcState.Walk:
+                Debug.Log("npc walk");
+                break;
+            case NpcState.Wait:
+                Debug.Log("npc Wait");
+                break;
+            case NpcState.Sit:
+                Debug.Log("npc sit");
+                break;
+            default:
+                StartCoroutine(DisableMe());
+                break;
+        }
     }
     
-    private IEnumerator MoveToPoint()
+    
+    public bool MoveToPoint(Transform targetPoint)
     {
-        while (true)
+        if (!targetPoint)
         {
-            float distance = Vector3.Distance(transform.position, stopPoint.position);
-
-            // Если расстояние меньше или равно stopDistance
-            if (distance <= stopDistance)
-            {
-                npcAnimator.SetBool(Wait, true); // Включаем анимацию ожидания
-                yield return StartCoroutine(SmoothRotateToStopPoint()); // Выполняем плавный поворот
-                yield break; // Завершаем корутину
-            }
-
-            // Поворот в сторону точки
-            RotateTowardsTarget();
-
-            yield return null; // Ждем до следующего кадра
+            StartCoroutine(DisableMe());
+            return false;
         }
+        
+        StartCoroutine(WalkAnimation(targetPoint));
+        return true;
     }
 
-    private void RotateTowardsTarget()
+    private IEnumerator WalkAnimation(Transform targetPoint)
     {
-        Vector3 direction = (stopPoint.position - transform.position).normalized;
+        npcAnimator.SetBool(Wait, false);
+        
+        _distance = Vector3.Distance(transform.position, targetPoint.position);
 
-        if (direction.sqrMagnitude > 0.001f) // Проверяем, чтобы направление было значимым
+        yield return StartCoroutine(SmoothRotateToStopPoint(Quaternion.LookRotation(targetPoint.position - transform.position)));
+        
+        while (_distance > _stopDistance)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            _distance = Vector3.Distance(transform.position, targetPoint.position);
+            transform.rotation = Quaternion.LookRotation(targetPoint.position - transform.position);
+            yield return null;
         }
+        
+        yield return StartCoroutine(SmoothRotateToStopPoint(targetPoint.rotation));
+        onPosition = true;
     }
 
-    private IEnumerator SmoothRotateToStopPoint()
+    private IEnumerator SmoothRotateToStopPoint(Quaternion lookPoint)
     {
-        Quaternion targetRotation = stopPoint.rotation; // Поворот к ориентации stopPoint
-
-        while (Quaternion.Angle(transform.rotation, targetRotation) > 0.01f)
+        while (Quaternion.Angle(transform.rotation, lookPoint) > 1f)
         {
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationSpeed * 50f * Time.deltaTime);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, lookPoint, _rotationSpeed * 50f * Time.deltaTime);
             yield return null;
         }
 
-        // Устанавливаем точный поворот
-        transform.rotation = targetRotation;
+        transform.rotation = lookPoint;
     }
 
-    private void AlignWithStopPoint()
+    private IEnumerator DisableMe()
     {
-        // Поворот NPC в точную ориентацию stopPoint
-        transform.rotation = stopPoint.rotation;
+        yield return new WaitForSeconds(timeToDisable);
+        gameObject.SetActive(false);
     }
 }
