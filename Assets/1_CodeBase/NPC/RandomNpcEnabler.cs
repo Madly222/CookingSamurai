@@ -26,11 +26,9 @@ public class RandomNpcEnabler : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(Randomizer(minSpawnRate, maxSpawnRate));
-            if (!SelectNpc()) continue; //if no inactive npc, dont take it
+            if (!SelectNpc()) continue;
             SelectStartPoint();
-            pedestrian[_randomPedestrianIndex].transform.position = startPoint[_randomPoint].position;
-            pedestrian[_randomPedestrianIndex].transform.rotation = startPoint[_randomPoint].rotation;
-            pedestrian[_randomPedestrianIndex].SetActive(true);
+            ActivePedestrian();
         }
     }
 
@@ -54,6 +52,13 @@ public class RandomNpcEnabler : MonoBehaviour
     private void SelectStartPoint()
     {
         _randomPoint = Randomizer(0, startPoint.Length);
+    }
+
+    private void ActivePedestrian()
+    {
+        pedestrian[_randomPedestrianIndex].transform.position = startPoint[_randomPoint].position;
+        pedestrian[_randomPedestrianIndex].transform.rotation = startPoint[_randomPoint].rotation;
+        pedestrian[_randomPedestrianIndex].SetActive(true);
     }
     
     private static int Randomizer(int min, int max)

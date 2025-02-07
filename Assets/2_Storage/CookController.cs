@@ -12,7 +12,7 @@ public class CookController : MonoBehaviour
     [SerializeField] private ItemDropper itemDropper;
     [SerializeField] private NpcUiController npcUiController;
     [SerializeField] private AnimationController animationController;
-    [SerializeField] private SellButton sellButton;
+    //[SerializeField] private SellButton sellButton;
     
     [SerializeField] private int recipeLevel = 1;
     
@@ -20,6 +20,8 @@ public class CookController : MonoBehaviour
     [SerializeField] private List<CookPool.RandomVariation> foodImage;
     
     [SerializeField] public string boardType = "standart";
+    
+    public static event Action<int> OnChangeRecipe;
     
     private int _nrPrepared;
     private int _randomRecipe;
@@ -39,20 +41,39 @@ public class CookController : MonoBehaviour
         ChangeFood();
         itemDropper.trash = cookPool.nonPreparable;
     }
+    
+    private void OnEnable()
+    {
+        SellButton.OnSell += ChangeFood;
+    }
 
-    public void ChangeFood()
+    private void OnDisable()
+    {
+        SellButton.OnSell -= ChangeFood;
+    }
+
+    private void ChangeFood()
+    {
+        _randomRecipe = Randomizer(0, recipeLevel);
+        _randomVariation = Randomizer(0, cookPool.recipes[_randomRecipe].variations.Length); 
+        itemDropper.goodFood = cookPool.recipes[_randomRecipe].ingredients.Select(i => i.toSlice).ToList();
+        UpdateUI();
+        ChangePrice();
+    }
+
+    private void UpdateUI()
     {
         npcUiController.DisableBoxes();
-        _randomRecipe = Randomizer(0, recipeLevel);
-        _randomVariation = Randomizer(0, cookPool.recipes[_randomRecipe].variations.Length);
-
-        itemDropper.goodFood = cookPool.recipes[_randomRecipe].ingredients.Select(i => i.toSlice).ToList();
-
         npcUiController.ChangeDialogBox(cookPool.recipes[_randomRecipe].npcUI);
         
         for (var k = 0; k < cookPool.recipes[_randomRecipe].variations[_randomVariation].recipe.Length; k++)
             npcUiController.ChangeTextureItem(k, cookPool.recipes[_randomRecipe].variations[_randomVariation].recipe[k].image);
     }
+    private void ChangePrice()
+    {
+        OnChangeRecipe?.Invoke(cookPool.recipes[_randomRecipe].variations[_randomVariation].coinReward);
+    }
+    
     public bool SpawnPreparedPiece(GameObject preparedFood, string claimedName)
     {
         if(!_canClaim)
@@ -108,9 +129,6 @@ public class CookController : MonoBehaviour
     }
     private void MakeGoodFood()
     {
-        sellButton.SetPrice(cookPool.recipes[_randomRecipe].variations[_randomVariation].coinReward);
-        
-        
         _canClaim = false;
         _nrPrepared = 0;
         _claimed.Clear();

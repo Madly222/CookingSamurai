@@ -2,106 +2,110 @@ using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class CustomerBrain : MonoBehaviour
-{
-    [SerializeField] private Animator npcAnimator;
-    [SerializeField] private NpcNavigationController npcNavigationController;
-    [SerializeField] private float timeToDisable;
-    
-    public enum NpcState
-    {
-        Walk,
-        Wait,
-        Sit
-    }
+{ 
+   [SerializeField] private NavMeshAgent navMeshAgent;
+   [SerializeField] private Animator animator;
+   [SerializeField] private NpcNavigationController npcNavigationController;
+   
+   private string _positionName;
+   private Transform _targetPoint;
+   private float _distance;
+   private Quaternion _targetRotation;
+   private Vector3 _lookPoint;
+   private float _rotationSpeed = 180f;
 
-    //public NpcState currentNpcState;
-    
-    
-    private Transform _stopPoint;
-    public bool onPosition;
-    
-    [SerializeField] private float _rotationSpeed = 2f;
-    [SerializeField] private float _stopDistance = 0.3f;
-    [SerializeField] private float _distance;
+   private float _f;
+   private void Awake()
+   {
+       //navMeshAgent.updateRotation = false;
+   }
 
+   private void OnEnable()
+   {
+       animator.SetLayerWeight(1, 0f);
+       npcNavigationController.TakeNpc(this);
+   }
+   public void WalkTo(string positionName, Transform targetPoint)
+   {
+       _positionName = positionName;
+       _targetPoint = targetPoint;
+       StartCoroutine(WalkToPoint());
+   }
+   private void PointReached()
+   {
+       switch (_positionName)
+       {
+           case "Exit":
+               gameObject.SetActive(false);
+               break;
+           case "InQueue":
+                
+               break;
+           case "ActivePoint":
+               SellButton.OnSell += TakeItem;
+               break;
+           
+           default:
+               Debug.LogError("No name of position to walk", gameObject);
+               gameObject.SetActive(false);
+               break;
+       }
+   }
+   public void DisableOnExit(Transform targetPoint)
+   {
+       _positionName = "Exit";
+       _targetPoint = targetPoint;
+       StartCoroutine(WalkToPoint());
+   }
+   
+   private void TakeItem()
+   {
+       StartCoroutine(TakeItemReaction());
+   }
+   
+   private void SmoothRotate(Transform targetRotation)
+   {
+       transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation.rotation, _rotationSpeed * Time.deltaTime);
+   }
+   
+   IEnumerator WalkToPoint()
+   {
+       while (Quaternion.Angle(transform.rotation, _targetPoint.rotation) > 1f)
+       {
+           SmoothRotate(_targetPoint);
+           yield return null;
+       }
+       
+       animator.SetBool("Walk", true);
+       navMeshAgent.SetDestination(_targetPoint.position);
 
-    
-    private bool _isCounterPoint;
-    private static readonly int Wait = Animator.StringToHash("Wait");
+       yield return new WaitUntil(() => !navMeshAgent.pathPending && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance);
+       
+       animator.SetBool("Walk", false);
+       
+       while (Quaternion.Angle(transform.rotation, _targetPoint.rotation) > 1f)
+       {
+           SmoothRotate(_targetPoint);
+           yield return null;
+       }
 
-    private void OnEnable()
-    {
-        if(!npcNavigationController.RequestTask())
-            ToDoNpc(default);
-    }
+       PointReached();
+   }
 
-    public void ToDoNpc(NpcState currentNpcState)
-    {
-        switch (currentNpcState)
-        {
-            case NpcState.Walk:
-                Debug.Log("npc walk");
-                break;
-            case NpcState.Wait:
-                Debug.Log("npc Wait");
-                break;
-            case NpcState.Sit:
-                Debug.Log("npc sit");
-                break;
-            default:
-                StartCoroutine(DisableMe());
-                break;
-        }
-    }
-    
-    
-    public bool MoveToPoint(Transform targetPoint)
-    {
-        if (!targetPoint)
-        {
-            StartCoroutine(DisableMe());
-            return false;
-        }
-        
-        StartCoroutine(WalkAnimation(targetPoint));
-        return true;
-    }
-
-    private IEnumerator WalkAnimation(Transform targetPoint)
-    {
-        npcAnimator.SetBool(Wait, false);
-        
-        _distance = Vector3.Distance(transform.position, targetPoint.position);
-
-        yield return StartCoroutine(SmoothRotateToStopPoint(Quaternion.LookRotation(targetPoint.position - transform.position)));
-        
-        while (_distance > _stopDistance)
-        {
-            _distance = Vector3.Distance(transform.position, targetPoint.position);
-            transform.rotation = Quaternion.LookRotation(targetPoint.position - transform.position);
-            yield return null;
-        }
-        
-        yield return StartCoroutine(SmoothRotateToStopPoint(targetPoint.rotation));
-        onPosition = true;
-    }
-
-    private IEnumerator SmoothRotateToStopPoint(Quaternion lookPoint)
-    {
-        while (Quaternion.Angle(transform.rotation, lookPoint) > 1f)
-        {
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, lookPoint, _rotationSpeed * 50f * Time.deltaTime);
-            yield return null;
-        }
-
-        transform.rotation = lookPoint;
-    }
-
-    private IEnumerator DisableMe()
-    {
-        yield return new WaitForSeconds(timeToDisable);
-        gameObject.SetActive(false);
-    }
+   IEnumerator TakeItemReaction()
+   {
+       _f = 0;
+       while (_f < 1f)
+       {
+           _f += 0.75f * Time.deltaTime;
+           _f = Mathf.Clamp(_f, 0f, 1f);
+           animator.SetLayerWeight(1, _f);
+           yield return null;
+       }
+       npcNavigationController.GiveSitPoint(this);
+       SellButton.OnSell -= TakeItem;
+   }
 }

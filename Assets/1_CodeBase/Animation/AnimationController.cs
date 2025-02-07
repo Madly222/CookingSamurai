@@ -11,13 +11,16 @@ public class AnimationController : MonoBehaviour
     private AnimatorStateInfo _stateInfo;
     
     private static readonly int IsTrash = Animator.StringToHash("IsTrash");
-    /*private void Awake()
+    
+    private void OnEnable()
     {
-            cookEffect.transform.SetParent(effectPoint.transform);
-        cookEffect.transform.localPosition = Vector3.zero;
-        cookEffect.transform.localRotation = Quaternion.Euler(-90, 0, 0);
-        cookEffect.SetActive(false);
-    }*/
+        SellButton.OnSell += PlaySellAnimation;
+    }
+
+    private void OnDisable()
+    {
+        SellButton.OnSell -= PlaySellAnimation;
+    }
     
     public void PrepareFood(bool isTrash)
     {
@@ -38,14 +41,9 @@ public class AnimationController : MonoBehaviour
         sceneAnimator.enabled = false;
     }
 
-    public bool PlaySellAnimation()
+    private void PlaySellAnimation()
     {
-        if (CheckAnimatorState())
-            return true;
-        
-        ChangeAnimatorState(true);
-        sceneAnimator.Play("Sell");
-        return false;
+        StartCoroutine(WaitForSell());
     }
     
     public void RotateCamera(string animationName)
@@ -69,7 +67,16 @@ public class AnimationController : MonoBehaviour
     {
         return Random.Range(min, max);
     }
-    
+    private IEnumerator WaitForSell()
+    {
+        while (CheckAnimatorState())
+        {
+            yield return new WaitForSeconds(0.2f);
+        }
+        
+        ChangeAnimatorState(true);
+        sceneAnimator.Play("Sell");
+    }
     private IEnumerator WaitForPrepare(bool isTrash)
     {
          while (CheckAnimatorState())

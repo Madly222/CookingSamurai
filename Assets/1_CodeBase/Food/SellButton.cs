@@ -1,34 +1,38 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class SellButton : MonoBehaviour
 {
-
     [SerializeField] private LevelManager levelManager;
     [SerializeField] private CookController cookController;
-    [SerializeField] private AnimationController animationController;
+    //[SerializeField] private AnimationController animationController;
         
     [SerializeField] private CoinUI coinUI;
-    
     [SerializeField] private AudioClip sellSound;
+    public static event Action OnSell;
     
     private int _points;
     
-    public void OnMouseDown()
+    private void OnEnable()
     {
-        //Check can play animation for sale and if yes - sell it
-        if(animationController.PlaySellAnimation())
-            return;
-        
-        coinUI.CoinIncrease(levelManager.IncreaseGold(_points),_points);
-        cookController.ChangeFood();
-        
-        SoundPlayer.Instance.PlayEffect(sellSound, transform);
-        gameObject.SetActive(false);
+         CookController.OnChangeRecipe += SetPrice;
     }
 
-    public void SetPrice(int price)
+    private void OnDisable()
+    {
+        CookController.OnChangeRecipe -= SetPrice;
+    }
+    public void OnMouseDown()
+    {
+        coinUI.CoinIncrease(levelManager.IncreaseGold(_points),_points);
+        //cookController.ChangeFood();
+        SoundPlayer.Instance.PlayEffect(sellSound, transform);
+        gameObject.SetActive(false);
+        
+        OnSell?.Invoke();
+    }
+
+    private void SetPrice(int price)
     {
         _points = price;
     }
