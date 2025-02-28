@@ -6108,6 +6108,7 @@ GameObject:
   - component: {fileID: 305999541}
   - component: {fileID: 305999540}
   - component: {fileID: 305999539}
+  - component: {fileID: 305999542}
   m_Layer: 5
   m_Name: PrepareBoxes
   m_TagString: Untagged
@@ -6203,12 +6204,24 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_VertexColorAlwaysGammaSpace: 0
+  m_VertexColorAlwaysGammaSpace: 1
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &305999542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 305999537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f9255d68f755fa4f948b50ee68736bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &308985899
 GameObject:
   m_ObjectHideFlags: 0
@@ -7516,7 +7529,7 @@ Transform:
   m_GameObject: {fileID: 386055703}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -15, y: 0, z: -8}
+  m_LocalPosition: {x: -0.75, y: 0, z: -2.42}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -8582,7 +8595,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 419309271}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -8593,7 +8606,7 @@ Transform:
   - {fileID: 1255917239}
   - {fileID: 1246519723}
   - {fileID: 1729259185}
-  m_Father: {fileID: 2024157891}
+  m_Father: {fileID: 1261612990}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &422909412
 GameObject:
@@ -13007,7 +13020,7 @@ GameObject:
   - component: {fileID: 662384714}
   - component: {fileID: 662384713}
   m_Layer: 9
-  m_Name: Girl0 (1)
+  m_Name: Girl1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13747,6 +13760,37 @@ Transform:
   m_Children:
   - {fileID: 1439257105}
   m_Father: {fileID: 718488938}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &689086152
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 689086153}
+  m_Layer: 0
+  m_Name: ////////////////////////////////////////
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &689086153
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 689086152}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.033591438, y: 0.046607696, z: 0.22878198}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &701582388
 GameObject:
@@ -24621,7 +24665,7 @@ GameObject:
   - component: {fileID: 1246519725}
   - component: {fileID: 1246519724}
   m_Layer: 9
-  m_Name: Girl0 (4)
+  m_Name: Girl4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24860,7 +24904,7 @@ GameObject:
   - component: {fileID: 1255917241}
   - component: {fileID: 1255917240}
   m_Layer: 9
-  m_Name: Girl0 (3)
+  m_Name: Girl3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25282,7 +25326,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1261612990}
   m_Layer: 0
-  m_Name: ItemStorage
+  m_Name: Storage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25301,6 +25345,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 419309272}
   - {fileID: 899053399}
   - {fileID: 882258943}
   m_Father: {fileID: 0}
@@ -34770,7 +34815,7 @@ GameObject:
   - component: {fileID: 1729259181}
   - component: {fileID: 1729259180}
   m_Layer: 9
-  m_Name: Girl0 (5)
+  m_Name: Girl5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39214,7 +39259,7 @@ GameObject:
   - component: {fileID: 1959099781}
   - component: {fileID: 1959099780}
   m_Layer: 9
-  m_Name: Girl0 (2)
+  m_Name: Girl2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40884,7 +40929,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 419309272}
   - {fileID: 95856783}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -55331,6 +55375,7 @@ GameObject:
   - component: {fileID: 8881977901112450976}
   - component: {fileID: 5827192420642097272}
   - component: {fileID: 4227995840278172571}
+  - component: {fileID: 8881977901112450977}
   m_Layer: 8
   m_Name: DialogBox
   m_TagString: Untagged
@@ -57313,6 +57358,18 @@ Transform:
   - {fileID: 1065950176}
   m_Father: {fileID: 661191856927135673}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &8881977901112450977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7829289571171324912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f9255d68f755fa4f948b50ee68736bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!65 &8904421209161191601
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -57983,6 +58040,7 @@ SceneRoots:
   - {fileID: 6939984411282124511}
   - {fileID: 139280438}
   - {fileID: 2024157891}
+  - {fileID: 689086153}
   - {fileID: 661191856927135673}
   - {fileID: 518064136}
   - {fileID: 1261612990}

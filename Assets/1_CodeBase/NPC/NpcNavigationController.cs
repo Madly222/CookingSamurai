@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -70,7 +71,7 @@ public class NpcNavigationController : MonoBehaviour
     
     public void GiveSitPoint(CustomerBrain thisCustomer)
     { 
-        QueueMove();
+        StartCoroutine(QueueMove());
         if (sittingPoints == null || sittingPoints.Length == 0)
         {
             TakeExitPoint(thisCustomer);
@@ -95,22 +96,27 @@ public class NpcNavigationController : MonoBehaviour
         thisCustomer.DisableOnExit(exitPoints[Randomize(0,exitPoints.Length)].transform);
     }
 
-    private void QueueMove() //here
+    private IEnumerator QueueMove()
     {
-        if (_inQueueNpc.Count > 0)
+        yield return new WaitForSeconds(1f);
+        Debug.Log("check available queue");
+        if (_inQueueNpc.Count <= 0) yield break;
+        _customerNpc[0] = _inQueueNpc[0];
+        _inQueueNpc.RemoveAt(0);
+        _index = 0;
+        yield return new WaitForSeconds(1f);
+        Debug.Log("move to active");
+        _customerNpc[0].WalkTo("ActivePoint",customerPoints[0].transform);
+        while (_index < _customerNpc.Count)
         {
-            _customerNpc[0] = _inQueueNpc[0];
-            _inQueueNpc.RemoveAt(0);
-            
-            
-            for (int i = 0;i < _inQueueNpc.Count; i++)
-            {
-                
-            }
+            Debug.Log("move queue");
+            _customerNpc[_index].WalkTo("InQueue", inQueuePoints[_index].transform);
+            _index++;
+            yield return new WaitForSeconds(1f);
         }
-
+        
+        inQueuePoints[^1].SetActive(false);
     }
-
     private static int Randomize(int min, int max)
     {
         return Random.Range(min, max);

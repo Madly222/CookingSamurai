@@ -20,7 +20,6 @@ public class CookController : MonoBehaviour
     [SerializeField] private List<CookPool.RandomVariation> foodImage;
     
     [SerializeField] public string boardType = "standart";
-    
     public static event Action<int> OnChangeRecipe;
     
     private int _nrPrepared;

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -18,14 +19,9 @@ public class CustomerBrain : MonoBehaviour
    private float _rotationSpeed = 180f;
 
    private float _f;
-   private void Awake()
-   {
-       //navMeshAgent.updateRotation = false;
-   }
 
    private void OnEnable()
    {
-       animator.SetLayerWeight(1, 0f);
        npcNavigationController.TakeNpc(this);
    }
    public void WalkTo(string positionName, Transform targetPoint)
@@ -39,6 +35,7 @@ public class CustomerBrain : MonoBehaviour
        switch (_positionName)
        {
            case "Exit":
+               animator.SetLayerWeight(1, 0f);
                gameObject.SetActive(false);
                break;
            case "InQueue":
@@ -73,11 +70,11 @@ public class CustomerBrain : MonoBehaviour
    
    IEnumerator WalkToPoint()
    {
-       while (Quaternion.Angle(transform.rotation, _targetPoint.rotation) > 1f)
+       /*while (Quaternion.Angle(transform.rotation, _targetPoint.rotation) > 1f)
        {
            SmoothRotate(_targetPoint);
            yield return null;
-       }
+       }*/
        
        animator.SetBool("Walk", true);
        navMeshAgent.SetDestination(_targetPoint.position);
@@ -100,7 +97,7 @@ public class CustomerBrain : MonoBehaviour
        _f = 0;
        while (_f < 1f)
        {
-           _f += 0.75f * Time.deltaTime;
+           _f += Time.deltaTime;
            _f = Mathf.Clamp(_f, 0f, 1f);
            animator.SetLayerWeight(1, _f);
            yield return null;

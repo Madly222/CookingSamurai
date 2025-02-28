@@ -12,7 +12,7 @@ public class CustomerCatcher : MonoBehaviour
 
     IEnumerator ColdownToEnable()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
         dialogBox.SetActive(true);
         prepareBoxes.SetActive(true);
     }
