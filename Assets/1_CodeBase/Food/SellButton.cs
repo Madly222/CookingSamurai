@@ -12,20 +12,20 @@ public class SellButton : MonoBehaviour
     public static event Action OnSell;
     
     private int _points;
-    
-    private void OnEnable()
+
+    private void Awake()
     {
-         CookController.OnChangeRecipe += SetPrice;
+        CookController.OnChangeRecipe += SetPrice;
     }
 
-    private void OnDisable()
+    private void OnDestroy()
     {
         CookController.OnChangeRecipe -= SetPrice;
     }
+    
     public void OnMouseDown()
     {
-        coinUI.CoinIncrease(levelManager.IncreaseGold(_points),_points);
-        //cookController.ChangeFood();
+        coinUI.CoinIncrease(_points, levelManager.IncreaseGold(_points));
         SoundPlayer.Instance.PlayEffect(sellSound, transform);
         gameObject.SetActive(false);
         

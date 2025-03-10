@@ -13001,6 +13001,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1492487357}
   - {fileID: 2058633897}
   - {fileID: 1660976574}
   m_Father: {fileID: 95856783}
@@ -20262,7 +20263,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 400, y: 50}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 150, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1002943846
 MonoBehaviour:
@@ -28912,7 +28913,7 @@ GameObject:
   - component: {fileID: 1492487359}
   - component: {fileID: 1492487358}
   m_Layer: 0
-  m_Name: CounterPoin0
+  m_Name: QueuePoin0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28926,13 +28927,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1492487356}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.35, y: -0, z: -2.5}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.35, y: 0, z: -2.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1350919355}
-  m_Father: {fileID: 1827031493}
+  m_Father: {fileID: 662050165}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1492487358
 MonoBehaviour:
@@ -33376,7 +33377,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1660976574}
   m_Layer: 0
-  m_Name: QueuePoin1
+  m_Name: QueuePoin2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36906,8 +36907,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1492487357}
+  m_Children: []
   m_Father: {fileID: 95856783}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1828096457
@@ -40971,16 +40971,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 193d47b226f794c409ea3f2a57bf24d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customerPoints:
-  - {fileID: 1492487356}
   inQueuePoints:
+  - {fileID: 1492487356}
   - {fileID: 2058633896}
   - {fileID: 1660976573}
   sittingPoints: []
   exitPoints:
   - {fileID: 1490258957}
   - {fileID: 1057157798}
-  _customerNpc: []
   _inQueueNpc: []
 --- !u!1 &2025161937
 GameObject:
@@ -42010,7 +42008,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2058633897}
   m_Layer: 0
-  m_Name: QueuePoin0
+  m_Name: QueuePoin1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45041,7 +45039,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedType: 0
-  slice: {fileID: 0}
+  slice: {fileID: 8423482206597313654}
   meshRenderer: {fileID: 7595143885010482310}
   thisColl: {fileID: 5776791292384921540}
   rigidBody: {fileID: 3427290427726690982}

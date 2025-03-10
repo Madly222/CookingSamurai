@@ -1,11 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using ModestTree;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class CustomerBrain : MonoBehaviour
+public class CustomerBrain : MonoBehaviour, INPC
 { 
    [SerializeField] private NavMeshAgent navMeshAgent;
    [SerializeField] private Animator animator;
@@ -19,90 +20,89 @@ public class CustomerBrain : MonoBehaviour
    private float _rotationSpeed = 180f;
 
    private float _f;
+   
+   private static readonly int Walk = Animator.StringToHash("Walk");
 
    private void OnEnable()
    {
        npcNavigationController.TakeNpc(this);
    }
-   public void WalkTo(string positionName, Transform targetPoint)
+
+   public void WalkTo(string pointType, Transform pointTransform)
    {
-       _positionName = positionName;
-       _targetPoint = targetPoint;
-       StartCoroutine(WalkToPoint());
-   }
-   private void PointReached()
-   {
-       switch (_positionName)
+       _targetPoint = pointTransform;
+       
+       switch (pointType)
        {
-           case "Exit":
-               animator.SetLayerWeight(1, 0f);
-               gameObject.SetActive(false);
+           case "QueueP":
+               StartCoroutine(WalkToPoint());
                break;
-           case "InQueue":
-                
+           case "SitP":
+               StartCoroutine(WalkToPoint());
                break;
-           case "ActivePoint":
-               SellButton.OnSell += TakeItem;
+           case "EndP":
+               StartCoroutine(WalkToPoint());
+               StartCoroutine(DisableTimer());
                break;
-           
            default:
-               Debug.LogError("No name of position to walk", gameObject);
-               gameObject.SetActive(false);
+               Log.Error("Wrong walk point type", gameObject);
+               StartCoroutine(DisableTimer());
                break;
        }
    }
-   public void DisableOnExit(Transform targetPoint)
+
+   public void PlayAnimation(int animationName, bool animationState)
    {
-       _positionName = "Exit";
-       _targetPoint = targetPoint;
-       StartCoroutine(WalkToPoint());
+       animator.SetBool(animationName, animationState);
    }
-   
-   private void TakeItem()
+
+   public void HandAnimation()
    {
-       StartCoroutine(TakeItemReaction());
+       StartCoroutine(HandLayerUp());
    }
-   
+
    private void SmoothRotate(Transform targetRotation)
    {
        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation.rotation, _rotationSpeed * Time.deltaTime);
    }
-   
-   IEnumerator WalkToPoint()
+
+   private IEnumerator WalkToPoint()
    {
        /*while (Quaternion.Angle(transform.rotation, _targetPoint.rotation) > 1f)
        {
            SmoothRotate(_targetPoint);
            yield return null;
        }*/
-       
-       animator.SetBool("Walk", true);
+       PlayAnimation(Walk, true);
        navMeshAgent.SetDestination(_targetPoint.position);
-
-       yield return new WaitUntil(() => !navMeshAgent.pathPending && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance);
        
-       animator.SetBool("Walk", false);
+       yield return new WaitUntil(() => !navMeshAgent.pathPending && navMeshAgent.remainingDistance <= navMeshAgent.stoppingDistance);
+       PlayAnimation(Walk, false);
        
        while (Quaternion.Angle(transform.rotation, _targetPoint.rotation) > 1f)
        {
            SmoothRotate(_targetPoint);
            yield return null;
        }
-
-       PointReached();
    }
-
-   IEnumerator TakeItemReaction()
+   
+   private IEnumerator HandLayerUp()
    {
-       _f = 0;
-       while (_f < 1f)
+       var elapsedTime = 0f;
+
+       while (elapsedTime < 2f)
        {
-           _f += Time.deltaTime;
-           _f = Mathf.Clamp(_f, 0f, 1f);
-           animator.SetLayerWeight(1, _f);
+           elapsedTime += Time.deltaTime;
+           animator.SetLayerWeight(1, Mathf.Lerp(0, 1, elapsedTime / 2f));
            yield return null;
        }
-       npcNavigationController.GiveSitPoint(this);
-       SellButton.OnSell -= TakeItem;
+
+       animator.SetLayerWeight(1, 1);
+   }
+
+   private IEnumerator DisableTimer()
+   {
+       yield return new WaitForSeconds(20f);
+       gameObject.SetActive(false);
    }
 }

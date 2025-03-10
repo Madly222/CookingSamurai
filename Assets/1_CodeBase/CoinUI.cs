@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -8,16 +9,13 @@ public class CoinUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI uiText;
     [SerializeField] private GameObject coinBox;
     [SerializeField] private float duration = 2f;
-
-    private int _newCoinValue;
+    
     private float _elapsedTime;
     private int _displayValue;
 
-    private int _tempSaveValue;
     public void CoinIncrease(int itemPrice,int finalScore)
     {
-        _tempSaveValue += finalScore;
-        StartCoroutine(IncreaseValueOverTime(itemPrice, _tempSaveValue));
+        StartCoroutine(IncreaseValueOverTime(itemPrice, finalScore));
     }
 
     private IEnumerator IncreaseValueOverTime(int startValue, int endValue)

@@ -6,72 +6,60 @@ using Random = UnityEngine.Random;
 
 public class NpcNavigationController : MonoBehaviour
 {
-    [SerializeField] private GameObject[] customerPoints;
     [SerializeField] private GameObject[] inQueuePoints;
     [SerializeField] private GameObject[] sittingPoints;
     [SerializeField] private GameObject[] exitPoints;
     
-    
-    [SerializeField] private List<CustomerBrain> _customerNpc = new();
     [SerializeField] private List<CustomerBrain> _inQueueNpc = new();
-    //[SerializeField] private List<CustomerBrain> _sittingNpc = new();
-
+    
     private int _index;
+    private static readonly int Buy = Animator.StringToHash("Buy");
+
+    private void OnEnable()
+    {
+        SellButton.OnSell += SellFood;
+    }
+
+    private void OnDisable()
+    {
+        SellButton.OnSell -= SellFood;
+    }
 
     public void TakeNpc(CustomerBrain thisCustomer)
     {
-        if (_customerNpc.Count < customerPoints.Length)
-        {
-            GiveActivePoint(thisCustomer);
-            return;
-        }
-
         if (_inQueueNpc.Count < inQueuePoints.Length)
         {
             GiveQueuePoint(thisCustomer);
             return;
-        }   
-        TakeExitPoint(thisCustomer);
-    }
-
-    private void GiveActivePoint(CustomerBrain thisCustomer)
-    {
-        for (_index = 0;_index < customerPoints.Length;_index++)
-        {
-            if (!customerPoints[_index].activeSelf)
-            {
-                thisCustomer.WalkTo("ActivePoint",customerPoints[_index].transform);
-                customerPoints[_index].SetActive(true);
-                _customerNpc.Add(thisCustomer);
-                Debug.Log("Npc taken active point", customerPoints[_index]);
-                return;
-            }
         }
         
         TakeExitPoint(thisCustomer);
-        Debug.Log("No active point available", thisCustomer);
     }
+
     private void GiveQueuePoint(CustomerBrain thisCustomer)
     {
         for (_index = 0;_index < inQueuePoints.Length;_index++)
         {
-            if (!inQueuePoints[_index].activeSelf)
-            {
-                thisCustomer.WalkTo("InQueue",inQueuePoints[_index].transform);
-                inQueuePoints[_index].SetActive(true);
-                _inQueueNpc.Add(thisCustomer);
-                Debug.Log("Npc taken queue point", inQueuePoints[_index]);
-                return;
-            }
+            if (inQueuePoints[_index].activeSelf) continue;
+            
+            thisCustomer.WalkTo("QueueP",inQueuePoints[_index].transform);
+            inQueuePoints[_index].SetActive(true);
+            _inQueueNpc.Add(thisCustomer);
+            Debug.Log("Npc taken active point", inQueuePoints[_index]);
+            return;
         }
         
         TakeExitPoint(thisCustomer);
-        Debug.Log("No queue point available", thisCustomer);
+        Debug.Log("No active point available for", thisCustomer);
     }
-    
+
+    private void SellFood()
+    {
+        StartCoroutine(CustomerBuy());
+    }
     public void GiveSitPoint(CustomerBrain thisCustomer)
     { 
-        StartCoroutine(QueueMove());
+        //StartCoroutine(QueueMove());
         if (sittingPoints == null || sittingPoints.Length == 0)
         {
             TakeExitPoint(thisCustomer);
@@ -93,30 +81,29 @@ public class NpcNavigationController : MonoBehaviour
 
     private void TakeExitPoint(CustomerBrain thisCustomer)
     {
-        thisCustomer.DisableOnExit(exitPoints[Randomize(0,exitPoints.Length)].transform);
+        thisCustomer.WalkTo("EndP", exitPoints[Randomize(0,exitPoints.Length)].transform);
     }
 
-    private IEnumerator QueueMove()
+    private IEnumerator CustomerBuy()
     {
-        yield return new WaitForSeconds(1f);
-        Debug.Log("check available queue");
-        if (_inQueueNpc.Count <= 0) yield break;
-        _customerNpc[0] = _inQueueNpc[0];
+        _inQueueNpc[0].HandAnimation();
+        yield return new WaitForSeconds(2.5f);
+        TakeExitPoint(_inQueueNpc[0]);
         _inQueueNpc.RemoveAt(0);
-        _index = 0;
-        yield return new WaitForSeconds(1f);
-        Debug.Log("move to active");
-        _customerNpc[0].WalkTo("ActivePoint",customerPoints[0].transform);
-        while (_index < _customerNpc.Count)
+        yield return new WaitForSeconds(0.5f);
+        for (_index = 0; _index < _inQueueNpc.Count; _index++)
         {
-            Debug.Log("move queue");
-            _customerNpc[_index].WalkTo("InQueue", inQueuePoints[_index].transform);
-            _index++;
-            yield return new WaitForSeconds(1f);
+            _inQueueNpc[_index].WalkTo("QueueP", inQueuePoints[_index].transform);
+            yield return new WaitForSeconds(0.5f);
         }
-        
-        inQueuePoints[^1].SetActive(false);
+
+        var inactiveCount = inQueuePoints.Length - _inQueueNpc.Count;
+        for (_index = 0; _index < inactiveCount; _index++)
+        {
+            inQueuePoints[^ (_index + 1)].SetActive(false);
+        }
     }
+    
     private static int Randomize(int min, int max)
     {
         return Random.Range(min, max);

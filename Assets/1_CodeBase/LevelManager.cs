@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
-    private int _playerScore;
+    private int _playerScore = 100;
     
     public int goodFoodChance = 10;
     public float maxSpawnSpeed = 1.5f;
 
     public int IncreaseGold(int points)
     {
-
+        _playerScore += points;
         return _playerScore;
     }
 

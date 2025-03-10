@@ -96,9 +96,6 @@ public class CookController : MonoBehaviour
         if (_currentItem == -1 || _claimed.Contains(foodName))
         {
             MakeBadFood();
-            //Logger.Log(_currentItem == -1 
-                //? "Collected item is bad" 
-                //: "This item already taken", gameObject);
             return;
         }
 
